@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI知脉 - 企业级AI知识采编一体化解决方案</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root { --ink: #0A0E1A; --blue: #2563EB; --violet: #7C3AED; --pink: #DB2777; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'Noto Sans SC',sans-serif; background:var(--ink); color:#F1F5F9; overflow-x:hidden; }
+.syne { font-family:'Syne',sans-serif; }
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:#0A0E1A; }
+::-webkit-scrollbar-thumb { background:#3730A3; border-radius:3px; }
+
+/* noise */
+body::after { content:''; position:fixed; inset:0; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E"); pointer-events:none; z-index:9999; }
+
+/* grad text */
+.gt { background:linear-gradient(135deg,#60A5FA,#A78BFA,#F472B6); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.gt2 { background:linear-gradient(135deg,#38BDF8,#818CF8); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+
+/* glass */
+.glass { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); backdrop-filter:blur(12px); }
+.card { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:20px; transition:all .3s ease; }
+.card:hover { background:rgba(255,255,255,0.07); border-color:rgba(124,58,237,0.4); transform:translateY(-4px); box-shadow:0 20px 60px rgba(124,58,237,0.15); }
+
+/* nav */
+nav { position:fixed; top:0; left:0; right:0; z-index:100; transition:all .3s; }
+nav.scrolled { background:rgba(10,14,26,0.9); backdrop-filter:blur(20px); border-bottom:1px solid rgba(255,255,255,0.06); }
+
+/* hero */
+.hero-bg { background:radial-gradient(ellipse 80% 50% at 50% -5%,rgba(99,102,241,0.4) 0%,transparent 70%), radial-gradient(ellipse 50% 40% at 85% 85%,rgba(219,39,119,0.12) 0%,transparent 60%), #0A0E1A; }
+
+/* reveal */
+.reveal { opacity:0; transform:translateY(36px); transition:opacity .7s ease,transform .7s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s}
+
+/* section label */
+.slabel { font-family:'Syne',sans-serif; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:rgba(129,140,248,.8); }
+
+/* divider */
+.divider { height:1px; background:linear-gradient(to right,transparent,rgba(99,102,241,.3),transparent); max-width:700px; margin:0 auto; }
+
+/* tab */
+.tab { padding:9px 22px; border-radius:10px; font-size:14px; font-weight:500; cursor:pointer; transition:all .25s; color:rgba(255,255,255,.45); border:1px solid transparent; }
+.tab.on { color:#fff; background:rgba(99,102,241,.2); border-color:rgba(99,102,241,.5); }
+.tab:hover:not(.on) { color:rgba(255,255,255,.75); background:rgba(255,255,255,.05); }
+
+/* arch layers */
+.layer { border-radius:18px; padding:28px 32px; transition:transform .3s; }
+.layer:hover { transform:scale(1.01); }
+.l1 { background:linear-gradient(135deg,rgba(37,99,235,.12),rgba(99,102,241,.08)); border:1px solid rgba(37,99,235,.3); }
+.l2 { background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(99,102,241,.08)); border:1px solid rgba(124,58,237,.3); }
+.l3 { background:linear-gradient(135deg,rgba(219,39,119,.08),rgba(124,58,237,.08)); border:1px solid rgba(219,39,119,.2); }
+
+/* timeline */
+.tl-item { position:relative; padding-left:44px; }
+.tl-item::before { content:''; position:absolute; left:13px; top:30px; bottom:-24px; width:2px; background:linear-gradient(to bottom,rgba(99,102,241,.4),rgba(99,102,241,.05)); }
+.tl-item:last-child::before { display:none; }
+.tl-dot { position:absolute; left:0; top:18px; width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+.dot-done { background:linear-gradient(135deg,#2563EB,#6366F1); box-shadow:0 0 16px rgba(99,102,241,.5); }
+.dot-active { background:linear-gradient(135deg,#7C3AED,#DB2777); box-shadow:0 0 16px rgba(219,39,119,.5); animation:pdot 2s infinite; }
+.dot-plan { background:rgba(255,255,255,.08); border:2px solid rgba(255,255,255,.18); }
+@keyframes pdot { 0%,100%{box-shadow:0 0 16px rgba(219,39,119,.5)} 50%{box-shadow:0 0 28px rgba(219,39,119,.8)} }
+
+/* progress bar */
+.pbar { height:4px; border-radius:2px; background:rgba(255,255,255,.08); overflow:hidden; }
+.pfill { height:100%; border-radius:2px; background:linear-gradient(to right,#2563EB,#7C3AED); transition:width 1.5s cubic-bezier(.4,0,.2,1); }
+
+/* badge */
+.badge { display:inline-flex; align-items:center; gap:5px; padding:3px 11px; border-radius:100px; font-size:12px; font-weight:500; }
+.b-blue { background:rgba(37,99,235,.15); border:1px solid rgba(37,99,235,.3); color:#93C5FD; }
+.b-purple { background:rgba(124,58,237,.15); border:1px solid rgba(124,58,237,.3); color:#C4B5FD; }
+.b-pink { background:rgba(219,39,119,.15); border:1px solid rgba(219,39,119,.3); color:#F9A8D4; }
+.b-green { background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.3); color:#86EFAC; }
+.b-amber { background:rgba(245,158,11,.15); border:1px solid rgba(245,158,11,.3); color:#FCD34D; }
+
+/* chip */
+.chip { display:inline-flex; align-items:center; padding:5px 12px; border-radius:8px; font-size:12px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:rgba(255,255,255,.65); }
+
+/* scene illustration */
+.scene-box { position:relative; aspect-ratio:1; border-radius:20px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+.scene-box::before { content:''; position:absolute; inset:0; background:radial-gradient(circle at 30% 30%, rgba(99,102,241,0.15), transparent 60%), radial-gradient(circle at 70% 70%, rgba(219,39,119,0.1), transparent 50%); }
+.scene-icon-main { font-size:80px; position:relative; z-index:2; filter:drop-shadow(0 10px 30px rgba(0,0,0,0.3)); }
+.scene-float { position:absolute; border-radius:12px; background:rgba(255,255,255,0.08); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.12); padding:8px 14px; font-size:12px; font-weight:500; animation:sfloat 3s ease-in-out infinite; }
+.scene-float:nth-child(2) { top:15%; left:10%; animation-delay:0s; }
+.scene-float:nth-child(3) { top:25%; right:12%; animation-delay:0.8s; }
+.scene-float:nth-child(4) { bottom:20%; left:15%; animation-delay:1.6s; }
+.scene-float:nth-child(5) { bottom:15%; right:10%; animation-delay:2.4s; }
+@keyframes sfloat { 0%,100%{transform:translateY(0px)} 50%{transform:translateY(-8px)} }
+
+/* scene particles */
+.scene-particle { position:absolute; width:4px; height:4px; border-radius:50%; background:rgba(99,102,241,0.4); animation:sparticle 4s linear infinite; }
+.scene-particle:nth-child(6) { top:30%; left:20%; animation-delay:0s; }
+.scene-particle:nth-child(7) { top:50%; right:25%; animation-delay:1s; }
+.scene-particle:nth-child(8) { bottom:35%; left:30%; animation-delay:2s; }
+.scene-particle:nth-child(9) { top:60%; right:35%; animation-delay:3s; }
+@keyframes sparticle { 0%{opacity:0; transform:scale(0)} 50%{opacity:1; transform:scale(1.5)} 100%{opacity:0; transform:scale(0)} }
+
+/* compare table */
+.ctable { border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,.08); }
+.crow { display:grid; grid-template-columns:1.2fr 1fr 1fr; }
+.crow:not(:last-child) { border-bottom:1px solid rgba(255,255,255,.06); }
+.ccell { padding:14px 20px; font-size:14px; }
+.crow:first-child .ccell { background:rgba(255,255,255,.04); font-weight:600; font-size:13px; }
+
+/* stat */
+.stat-n { font-family:'Syne',sans-serif; font-size:44px; font-weight:800; line-height:1; }
+
+/* particle */
+.pt { position:absolute; border-radius:50%; pointer-events:none; animation:fpt linear infinite; }
+@keyframes fpt { 0%{transform:translateY(100vh) rotate(0deg);opacity:0} 10%{opacity:.6} 90%{opacity:.6} 100%{transform:translateY(-80px) rotate(720deg);opacity:0} }
+
+/* flow arrow */
+.farrow { display:flex; align-items:center; justify-content:center; color:rgba(99,102,241,.6); font-size:22px; }
+
+@media(max-width:768px){
+  .stat-n{font-size:32px;}
+  .crow{grid-template-columns:1fr;}
+  .crow:first-child{display:none;}
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- NAV -->
+<nav :class="{scrolled:scrolled}" class="py-4">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center text-white font-bold text-sm">AI</div>
+      <span class="font-semibold text-white text-sm">AI知脉</span>
+    </div>
+    <div class="hidden md:flex items-center gap-5 text-sm">
+      <a href="#pain" class="text-gray-400 hover:text-white transition">痛点</a>
+      <a href="#solution" class="text-gray-400 hover:text-white transition">解决方案</a>
+      <a href="#scenarios" class="text-gray-400 hover:text-white transition">使用场景</a>
+      <a href="#arch" class="text-gray-400 hover:text-white transition">产品架构</a>
+      <a href="#progress" class="text-gray-400 hover:text-white transition">进度</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+  <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
+    <div class="mb-5"><span class="slabel">ENTERPRISE AI KNOWLEDGE SOLUTION</span></div>
+    <h1 class="syne text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+      <span class="gt">AI 知脉</span><br>
+      <span class="text-white text-4xl md:text-5xl">企业级AI知识采编一体化解决方案</span>
+    </h1>
+    <p class="text-xl md:text-2xl text-gray-300 mb-4 font-medium">让每一次沟通，成为可持续复用的知识资产</p>
+    <p class="text-base text-gray-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+      通过多源知识采集、自动整理编译、持续记忆管理，将分散在对话、会议、录音中的信息，持续沉淀为可检索、可复用、可增值的知识资产
+    </p>
+    <div class="flex items-center justify-center gap-4 flex-wrap">
+      <a href="#pain" class="px-7 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-violet-600 text-white font-semibold hover:shadow-2xl hover:shadow-violet-500/40 transition-all duration-300 hover:scale-105 text-sm">了解解决方案</a>
+      <a href="#arch" class="px-7 py-3.5 rounded-xl glass text-white font-semibold hover:bg-white/10 transition text-sm">查看产品架构</a>
+    </div>
+  </div>
+  <div v-for="i in 10" :key="i" class="pt" :style="ptStyle(i)"></div>
+</section>
+
+<!-- PAIN POINTS -->
+<section id="pain" class="py-28">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="slabel mb-3 inline-block">PAIN POINTS</span>
+      <h2 class="syne text-4xl md:text-5xl font-extrabold mb-4"><span class="gt2">企业面临的核心痛点</span></h2>
+      <p class="text-gray-400 max-w-xl mx-auto">传统知识管理方式无法满足现代企业的需求</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-5">
+      <div v-for="(p,i) in pains" :key="i" class="card p-8 reveal" :class="'d'+(i+1)">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-violet-600/20 border border-blue-500/25 flex items-center justify-center mb-5 text-2xl">{{p.icon}}</div>
+        <h3 class="text-xl font-bold mb-3 text-white">{{p.title}}</h3>
+        <p class="text-gray-400 leading-relaxed text-sm">{{p.desc}}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section id="solution" class="py-28">
+  <div class="divider mb-20"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="slabel mb-3 inline-block">SOLUTION</span>
+      <h2 class="syne text-4xl md:text-5xl font-extrabold mb-4"><span class="gt2">四大核心价值</span></h2>
+      <p class="text-gray-400 max-w-xl mx-auto">采集 → 编译 → 记忆 → 管理 完整闭环</p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+      <div v-for="(v,i) in values" :key="i" class="card p-7 text-center reveal hover:scale-105 transition-transform duration-300" :class="'d'+(i+1)">
+        <div class="stat-n gt mb-3">{{v.stat}}</div>
+        <h3 class="text-base font-bold mb-2 text-white">{{v.title}}</h3>
+        <p class="text-gray-400 text-xs leading-relaxed">{{v.desc}}</p>
+      </div>
+    </div>
+    <!-- flow -->
+    <div class="glass rounded-2xl p-8 md:p-10 reveal">
+      <div class="grid grid-cols-4 md:grid-cols-7 gap-3 items-center">
+        <template v-for="(s,i) in flow" :key="i">
+          <div v-if="i%2===0" class="text-center">
+            <div class="w-14 h-14 mx-auto rounded-xl flex items-center justify-center mb-2 border text-2xl" :class="s.bg">{{s.icon}}</div>
+            <div class="font-bold text-white text-xs">{{s.title}}</div>
+            <div class="text-gray-500 text-xs mt-0.5">{{s.sub}}</div>
+          </div>
+          <div v-else class="farrow hidden md:flex">→</div>
+        </template>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENARIOS -->
+<section id="scenarios" class="py-28">
+  <div class="divider mb-20"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="slabel mb-3 inline-block">USE CASES</span>
+      <h2 class="syne text-4xl md:text-5xl font-extrabold mb-4"><span class="gt2">典型应用场景</span></h2>
+      <p class="text-gray-400 max-w-xl mx-auto">覆盖企业内外部多种沟通场景</p>
+    </div>
+    <div class="flex flex-wrap justify-center gap-3 mb-10">
+      <button v-for="(s,i) in scenarios" :key="i" @click="activeS=i" class="tab" :class="{on:activeS===i}">{{s.name}}</button>
+    </div>
+    <div class="glass rounded-2xl p-8 md:p-12 reveal">
+      <div class="grid md:grid-cols-2 gap-10 items-center">
+        <div>
+          <span class="badge mb-5 inline-block" :class="scenarios[activeS].bc">{{scenarios[activeS].badge}}</span>
+          <h3 class="syne text-2xl font-extrabold mb-4 text-white">{{scenarios[activeS].title}}</h3>
+          <p class="text-gray-400 mb-7 leading-relaxed text-sm">{{scenarios[activeS].desc}}</p>
+          <div class="space-y-5">
+            <div>
+              <div class="text-xs font-semibold text-indigo-400 mb-2 uppercase tracking-wider">解决的问题</div>
+              <ul class="space-y-1.5">
+                <li v-for="(pr,i) in scenarios[activeS].problems" :key="i" class="text-gray-400 text-sm flex items-start gap-2">
+                  <span class="text-indigo-400 mt-0.5 flex-shrink-0">•</span><span>{{pr}}</span>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <div class="text-xs font-semibold text-violet-400 mb-2 uppercase tracking-wider">核心价值</div>
+              <ul class="space-y-1.5">
+                <li v-for="(vl,i) in scenarios[activeS].vals" :key="i" class="text-gray-400 text-sm flex items-start gap-2">
+                  <span class="text-violet-400 mt-0.5 flex-shrink-0">✓</span><span>{{vl}}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="scene-box" :style="scenarios[activeS].sceneBg">
+          <!-- floating cards -->
+          <div class="scene-float" v-for="(tag, ti) in scenarios[activeS].tags" :key="ti"
+               :style="tag.pos">
+            <span class="mr-1.5">{{tag.icon}}</span>{{tag.label}}
+          </div>
+          <!-- main icon -->
+          <span class="scene-icon-main">{{scenarios[activeS].icon}}</span>
+          <!-- particles -->
+          <div class="scene-particle" v-for="n in 4" :key="'p'+n"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="arch" class="py-28">
+  <div class="divider mb-20"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="slabel mb-3 inline-block">ARCHITECTURE</span>
+      <h2 class="syne text-4xl md:text-5xl font-extrabold mb-4"><span class="gt2">产品架构设计</span></h2>
+      <p class="text-gray-400 max-w-xl mx-auto">三层能力架构 + LLM Wiki 技术范式</p>
+    </div>
+    <div class="space-y-5 mb-14">
+      <div v-for="(l,i) in layers" :key="i" class="layer reveal" :class="[l.cls,'d'+(i+1)]">
+        <div class="flex items-start gap-5">
+          <div class="w-11 h-11 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 text-2xl">{{l.icon}}</div>
+          <div class="flex-1">
+            <div class="flex items-center gap-3 mb-2 flex-wrap">
+              <h3 class="text-lg font-bold text-white">{{l.title}}</h3>
+              <span class="chip">{{l.status}}</span>
+            </div>
+            <p class="text-gray-400 text-sm mb-3">{{l.desc}}</p>
+            <div class="flex flex-wrap gap-2">
+              <span v-for="(f,j) in l.features" :key="j" class="px-2.5 py-1 rounded-lg bg-white/5 text-xs text-gray-300 border border-white/08">{{f}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- LLM Wiki vs RAG -->
+    <div class="glass rounded-2xl p-8 reveal">
+      <h3 class="syne text-xl font-extrabold mb-6 text-center text-white">LLM Wiki vs 传统 RAG</h3>
+      <div class="ctable">
+        <div class="crow">
+          <div class="ccell text-gray-500">对比维度</div>
+          <div class="ccell text-blue-400">传统 RAG</div>
+          <div class="ccell text-violet-400">LLM Wiki ✦</div>
+        </div>
+        <div v-for="(r,i) in cmp" :key="i" class="crow">
+          <div class="ccell font-medium text-gray-300">{{r.d}}</div>
+          <div class="ccell text-gray-400 text-sm">{{r.rag}}</div>
+          <div class="ccell text-gray-200 text-sm font-medium">{{r.wiki}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRESS -->
+<section id="progress" class="py-28">
+  <div class="divider mb-20"></div>
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="slabel mb-3 inline-block">ROADMAP</span>
+      <h2 class="syne text-4xl md:text-5xl font-extrabold mb-4"><span class="gt2">版本规划与进度</span></h2>
+      <p class="text-gray-400 max-w-xl mx-auto">从个人知识到组织知识的演进路径</p>
+    </div>
+    <div class="space-y-8">
+      <div v-for="(m,i) in milestones" :key="i" class="tl-item reveal" :class="'d'+(i+1)">
+        <div class="tl-dot" :class="m.dot"></div>
+        <div class="card p-6">
+          <div class="flex items-center gap-3 mb-2 flex-wrap">
+            <h3 class="syne text-lg font-extrabold text-white">{{m.ver}}</h3>
+            <span class="badge" :class="m.bc">{{m.st}}</span>
+          </div>
+          <p class="text-gray-400 text-sm mb-4">{{m.desc}}</p>
+          <div class="mb-4">
+            <div class="flex justify-between text-xs text-gray-500 mb-1.5"><span>进度</span><span>{{m.pct}}%</span></div>
+            <div class="pbar"><div class="pfill" :style="{width: visible ? m.pct+'%' : '0%'}"></div></div>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <span v-for="(f,j) in m.features" :key="j" class="px-2.5 py-1 rounded-lg bg-white/05 text-xs text-gray-300 border border-white/08">{{f}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENTIATION -->
+<section id="diff" class="py-28">
+  <div class="divider mb-20"></div>
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <span class="slabel mb-3 inline-block">COMPETITIVE EDGE</span>
+      <h2 class="syne text-4xl md:text-5xl font-extrabold mb-4"><span class="gt2">核心商业价值</span></h2>
+      <p class="text-gray-400 max-w-xl mx-auto">对企业管理层的五大价值主张</p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+      <div v-for="(d,i) in diffs" :key="i" class="card p-7 reveal" :class="'d'+(i%4+1)">
+        <div class="text-3xl mb-4">{{d.icon}}</div>
+        <h3 class="text-base font-bold mb-2 text-white">{{d.title}}</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">{{d.desc}}</p>
+      </div>
+    </div>
+    <!-- Slogan -->
+    <div class="glass rounded-2xl p-10 text-center reveal">
+      <p class="syne text-2xl md:text-3xl font-extrabold text-white mb-4">
+        我们不是在卖一个录音纪要工具
+      </p>
+      <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+        而是在帮助企业把高价值沟通过程持续沉淀为业务资产，让高价值知识从「跟着人走」变成「沉淀在企业里」
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="py-12 border-t border-white/06">
+  <div class="max-w-7xl mx-auto px-6 text-center">
+    <div class="flex items-center justify-center gap-3 mb-4">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-violet-600 flex items-center justify-center text-white font-bold text-xs">AI</div>
+      <span class="font-semibold text-white text-sm">AI知脉 · 企业级AI知识采编一体化解决方案</span>
+    </div>
+    <p class="text-gray-500 text-xs">v1.0 预计 2026 年 4 月底上线 · 内部产品方案说明</p>
+  </div>
+</footer>
+
+</div><!-- #app -->
+
+<script>
+const { createApp, ref, onMounted } = Vue;
+createApp({
+  setup() {
+    const scrolled = ref(false);
+    const activeS = ref(0);
+    const visible = ref(false);
+
+    const pains = [
+      { icon:'💨', title:'高价值沟通内容大量流失', desc:'企业每天产生大量高价值沟通——客户拜访、内部讨论、培训分享、面试访谈。这些内容包含客户需求、业务判断、经验方法、风险信号，但大部分随沟通结束快速流失，从未被有效沉淀。' },
+      { icon:'📦', title:'传统工具只能记录，无法持续沉淀', desc:'录音工具、会议纪要、云盘、CRM、知识库等系统更多解决的是"存储"问题，而不是"知识资产化"问题。内容即使被记录，后续仍依赖人工整理归类，难以形成稳定可复用的知识体系。' },
+      { icon:'🔄', title:'知识复用效率低，组织反复重复劳动', desc:'大量重复沟通、重复培训、重复同步、重复复盘的根本原因，不是信息不存在，而是信息缺乏结构化整理和持续维护，导致"找不到""想不起""不会用"，形成低效重复劳动。' },
+      { icon:'🧑‍💼', title:'优秀员工经验难以转化为组织资产', desc:'关键经验、客户理解、判断能力、沟通方法都沉淀在少数核心员工身上。人员流动、岗位变更或团队扩张时，企业面临知识断层、新人成长缓慢、经验难以复制的问题。' },
+    ];
+
+    const values = [
+      { stat:'↓', title:'降低高价值信息流失率', desc:'多源采集入口承接线下、线上和历史资料，确保高价值信息被持续保留' },
+      { stat:'↓', title:'降低知识整理人力成本', desc:'AI自动完成转写、摘要、场景拆分、结构化整理，减少大量人工归档工作' },
+      { stat:'↑', title:'提升知识检索复用效率', desc:'将沟通内容编译为可检索、可追溯、可复用的知识条目，快速查询复盘' },
+      { stat:'→', title:'推动个人经验向组织能力演进', desc:'优秀员工经验、业务方法逐步从个人沉淀演进为组织资产，支撑长期积累' },
+    ];
+
+    const flow = [
+      { icon:'📥', title:'多源采集', sub:'B100/会议/文件', bg:'bg-blue-500/20 border-blue-500/40' },
+      {},
+      { icon:'⚙️', title:'自动编译', sub:'AI结构化整理', bg:'bg-violet-500/20 border-violet-500/40' },
+      {},
+      { icon:'🧠', title:'持续记忆', sub:'知识沉淀积累', bg:'bg-pink-500/20 border-pink-500/40' },
+      {},
+      { icon:'🔍', title:'智能管理', sub:'检索复用复盘', bg:'bg-indigo-500/20 border-indigo-500/40' },
+    ];
+
+    const scenarios = [
+      {
+        name:'销售与商务', badge:'外部场景', bc:'b-blue', icon:'🤝',
+        title:'销售与商务沟通场景',
+        desc:'适用于客户拜访、商务洽谈、需求沟通、售前交流等场景，帮助销售团队保留客户沟通脉络，沉淀业务经验，支撑后续跟进与复盘。',
+        problems:['客户需求记录不完整','沟通细节易遗漏','多次拜访之间信息断裂','优秀销售经验难沉淀'],
+        vals:['保留完整客户沟通脉络','自动生成结构化拜访纪要','沉淀销售方法论与话术','提升商机推进效率'],
+        sceneBg:'background:linear-gradient(135deg, rgba(37,99,235,0.12), rgba(99,102,241,0.08)); border:1px solid rgba(37,99,235,0.2);',
+        tags:[
+          {icon:'📊',label:'客户画像',pos:'top:15%;left:8%;'},
+          {icon:'💬',label:'需求挖掘',pos:'top:22%;right:10%;'},
+          {icon:'📝',label:'拜访纪要',pos:'bottom:25%;left:12%;'},
+          {icon:'🎯',label:'跟进策略',pos:'bottom:18%;right:8%;'}
+        ]
+      },
+      {
+        name:'内部协同', badge:'内部场景', bc:'b-purple', icon:'👥',
+        title:'内部协同与组织复盘场景',
+        desc:'适用于项目讨论、跨部门协作、培训分享、复盘会、人事访谈等场景，帮助企业形成可持续积累的组织记忆。',
+        problems:['会议开得多但沉淀少','内部培训内容难复用','组织记忆断裂','跨部门上下文丢失'],
+        vals:['形成可持续积累的组织记忆','降低重复同步和重复沟通成本','培训内容自动结构化沉淀','提升组织复盘和协同效率'],
+        sceneBg:'background:linear-gradient(135deg, rgba(124,58,237,0.12), rgba(99,102,241,0.08)); border:1px solid rgba(124,58,237,0.2);',
+        tags:[
+          {icon:'🎓',label:'培训沉淀',pos:'top:18%;left:10%;'},
+          {icon:'🔄',label:'项目复盘',pos:'top:25%;right:12%;'},
+          {icon:'💡',label:'经验萃取',pos:'bottom:22%;left:15%;'},
+          {icon:'🤝',label:'协同记忆',pos:'bottom:20%;right:10%;'}
+        ]
+      },
+      {
+        name:'招聘与访谈', badge:'HR场景', bc:'b-green', icon:'📋',
+        title:'招聘与访谈场景',
+        desc:'适用于面试、候选人访谈、管理层沟通、人事访谈等场景，提升访谈记录标准化程度，增强后续可追溯性和复盘能力。',
+        problems:['记录不标准','判断依据缺失','后续对比困难','复盘效率低'],
+        vals:['标准化访谈记录','完整保留评估依据','支持多候选人横向对比','提升人事决策质量'],
+        sceneBg:'background:linear-gradient(135deg, rgba(34,197,94,0.12), rgba(16,185,129,0.08)); border:1px solid rgba(34,197,94,0.2);',
+        tags:[
+          {icon:'✅',label:'能力评估',pos:'top:16%;left:12%;'},
+          {icon:'📊',label:'对比分析',pos:'top:24%;right:10%;'},
+          {icon:'🎯',label:'匹配度',pos:'bottom:24%;left:10%;'},
+          {icon:'📈',label:'决策依据',pos:'bottom:18%;right:12%;'}
+        ]
+      },
+      {
+        name:'专业服务', badge:'垂直场景', bc:'b-pink', icon:'⚕️',
+        title:'专业服务型场景',
+        desc:'适用于医患问诊、金融尽调、咨询访谈、法务沟通等专业服务场景，帮助企业沉淀案例资产、经验资产和风险资产。',
+        problems:['专业沟通信息量大','人工记录成本高','后续复盘要求强','专业经验难沉淀'],
+        vals:['沉淀案例资产与经验资产','降低专业记录人力成本','提升服务标准化程度','支撑专业能力可复制'],
+        sceneBg:'background:linear-gradient(135deg, rgba(219,39,119,0.12), rgba(236,72,153,0.08)); border:1px solid rgba(219,39,119,0.2);',
+        tags:[
+          {icon:'🏥',label:'病历记录',pos:'top:17%;left:10%;'},
+          {icon:'⚖️',label:'合规审查',pos:'top:23%;right:11%;'},
+          {icon:'📋',label:'案例库',pos:'bottom:23%;left:13%;'},
+          {icon:'🔍',label:'风险识别',pos:'bottom:19%;right:9%;'}
+        ]
+      },
+    ];
+
+    const layers = [
+      {
+        cls:'l1', icon:'📡', title:'第一层：多源知识采集层', status:'v1.0 已支持',
+        desc:'承接线下、线上和历史资料等不同类型的沟通内容，确保高价值信息能够被持续保留。',
+        features:['B100 硬件设备（线下无感采集）','会议秒录（线上音频采集）','离线音频文件导入（历史补录）'],
+      },
+      {
+        cls:'l2', icon:'⚙️', title:'第二层：个人知识编译层', status:'v1.0 核心层',
+        desc:'借助 AI 自动完成转写、摘要、场景拆分、结构化整理和知识编译，形成可检索可复用的知识条目。',
+        features:['云信 ASR 转写（含说话人识别）','LLM 摘要与场景拆分','Ingest 自动编译入库','Query 问答与复盘','Lint 知识健康巡检'],
+      },
+      {
+        cls:'l3', icon:'🏢', title:'第三层：组织知识协同层', status:'v1.1 规划中',
+        desc:'多员工个人知识通过中立 Skill 自动/半自动同步到组织知识库，逐步实现组织级知识汇聚与统一管理。',
+        features:['多员工知识汇聚','中立同步 Skill','组织知识统一管理','跨团队知识关联'],
+      },
+    ];
+
+    const cmp = [
+      { d:'知识处理方式', rag:'每次查询从零检索文档碎片', wiki:'LLM 预先"编译"为结构化知识条目' },
+      { d:'知识积累', rag:'无积累，每次都是一次性', wiki:'持续积累，知识复利增长' },
+      { d:'可控性', rag:'黑盒（向量嵌入不可读）', wiki:'白盒（Markdown 人类可读可编辑）' },
+      { d:'一致性', rag:'无法保证跨文档一致', wiki:'Lint 机制自动检查矛盾和过时内容' },
+    ];
+
+    const milestones = [
+      {
+        ver:'v1.0 · 个人知识采编一体化版本', dot:'dot-done', bc:'b-green', st:'进行中 · 4月底上线',
+        desc:'先跑通个人场景，验证"多源采集 → 自动编译 → 持续记忆 → 可查询复盘"的核心体验。',
+        pct: 85,
+        features:['B100 采集接入','会议秒录接入','离线音频导入','LLM Wiki Ingest/Query/Lint','POPO + 龙虾助手双入口'],
+      },
+      {
+        ver:'v1.1 · 组织知识协同版本', dot:'dot-plan', bc:'b-amber', st:'规划中',
+        desc:'从个人知识沉淀升级到多员工知识汇聚与组织统一管理，实现知识从"跟着人走"到"沉淀在企业"。',
+        pct: 0,
+        features:['多员工知识流转','中立同步 Skill','组织知识统一管理','组织级问答与复盘'],
+      },
+    ];
+
+    const diffs = [
+      { icon:'🛡️', title:'减少知识流失，保护高价值业务资产', desc:'帮助企业把原本容易流失的沟通内容沉淀下来，降低知识随人员流动而流失的风险。' },
+      { icon:'⚡', title:'提升一线团队效率', desc:'通过自动整理与知识编译，减少低价值重复劳动，让一线团队将更多时间投入高价值动作。' },
+      { icon:'🎯', title:'提升复盘质量与决策质量', desc:'沉淀真实沟通过程和关键判断依据，为复盘、决策、培训提供更完整可追溯的信息基础。' },
+      { icon:'🚀', title:'缩短人才培养周期', desc:'将优秀员工的经验沉淀为可学习、可检索、可复用的知识资产，降低组织对个体经验的过度依赖。' },
+      { icon:'📈', title:'为企业长期知识复利打基础', desc:'随着知识持续积累，在复盘效率、经验复用、人才培养方面形成长期收益。' },
+    ];
+
+    function ptStyle(i) {
+      const size = 2 + (i % 4);
+      const colors = ['rgba(99,102,241,0.5)','rgba(124,58,237,0.4)','rgba(219,39,119,0.3)','rgba(59,130,246,0.4)'];
+      return {
+        width: size + 'px', height: size + 'px',
+        left: (i * 9.3 + 3) % 95 + '%',
+        background: colors[i % colors.length],
+        animationDuration: (8 + i * 1.7) + 's',
+        animationDelay: (i * 0.8) + 's',
+      };
+    }
+
+    onMounted(() => {
+      window.addEventListener('scroll', () => { scrolled.value = window.scrollY > 40; });
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('visible'); }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+      setTimeout(() => { visible.value = true; }, 600);
+    });
+
+    return { scrolled, activeS, visible, pains, values, flow, scenarios, layers, cmp, milestones, diffs, ptStyle };
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
