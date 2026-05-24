@@ -3471,6 +3471,424 @@ footer{
     align-items:flex-start;
   }
 }
+
+/* ═══════════════════════════════════════
+   Guide View — 安装指南覆盖层
+═══════════════════════════════════════ */
+
+.nav-guide-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:10px 16px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(255,255,255,.04);
+  color:rgba(245,247,251,.82);
+  font-size:13.5px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .2s ease;
+}
+.nav-guide-btn::before{
+  content:"";
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#a3c5ff;
+  box-shadow:0 0 8px rgba(163,197,255,.5);
+}
+.nav-guide-btn:hover{
+  background:rgba(163,197,255,.08);
+  border-color:rgba(163,197,255,.22);
+  color:#f5f7fb;
+}
+
+/* ─── Guide View：单页滚动布局（去掉侧栏） ─── */
+.guide-view{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:300;
+  background:var(--ink);
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+.guide-view.active{ display:block; }
+
+/* Topbar：sticky，跟随滚动 */
+.guide-topbar{
+  position:sticky;
+  top:0;
+  z-index:2;
+  height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:0 32px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  background:rgba(7,16,26,.92);
+  -webkit-backdrop-filter:blur(12px);
+  backdrop-filter:blur(12px);
+}
+
+/* Content：自然流式 */
+.guide-content{
+  padding:52px clamp(24px, 5vw, 72px) 100px;
+}
+
+.guide-content-inner{
+  max-width:760px;
+  margin:0 auto;
+}
+
+/* ── Section base ── */
+.g-section{
+  margin-bottom:60px;
+  scroll-margin-top:20px;
+}
+.g-eyebrow{
+  font:600 10px/1 var(--mono);
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:rgba(163,197,255,.6);
+  margin-bottom:10px;
+}
+.g-section h2{
+  font-family:var(--display);
+  font-size:clamp(22px, 3vw, 30px);
+  line-height:1.08;
+  letter-spacing:-.02em;
+  margin-bottom:14px;
+}
+.g-section > p,
+.g-section > p + p{
+  font-size:15px;
+  line-height:1.9;
+  color:rgba(245,247,251,.66);
+  margin-bottom:18px;
+  max-width:680px;
+}
+.g-divider{
+  height:1px;
+  background:linear-gradient(90deg, rgba(163,197,255,.12), transparent 70%);
+  margin:52px 0;
+}
+
+/* ── Info / warn boxes ── */
+.g-info-box{
+  padding:16px 18px;
+  border-radius:14px;
+  background:linear-gradient(180deg, rgba(163,197,255,.08), rgba(163,197,255,.04));
+  border:1px solid rgba(163,197,255,.14);
+  font-size:13.5px;
+  line-height:1.8;
+  color:rgba(245,247,251,.74);
+  margin-bottom:18px;
+}
+.g-warn-box{
+  padding:16px 18px;
+  border-radius:14px;
+  background:linear-gradient(180deg, rgba(231,199,139,.08), rgba(231,199,139,.04));
+  border:1px solid rgba(231,199,139,.16);
+  font-size:13.5px;
+  line-height:1.8;
+  color:rgba(245,247,251,.74);
+  margin-bottom:18px;
+}
+
+/* ── Method cards ── */
+.g-method-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-bottom:28px;
+}
+.g-method-card{
+  padding:24px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.09);
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  transition:all .2s ease;
+}
+.g-method-card.primary{
+  border-color:rgba(163,197,255,.18);
+  background:linear-gradient(180deg, rgba(163,197,255,.07), rgba(163,197,255,.03));
+}
+.g-method-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(163,197,255,.24);
+}
+.g-method-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:5px 10px;
+  border-radius:999px;
+  font:700 10px/1 var(--mono);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+.g-method-badge.main{
+  background:rgba(163,197,255,.12);
+  border:1px solid rgba(163,197,255,.18);
+  color:#c8ddf7;
+}
+.g-method-badge.alt{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  color:rgba(245,247,251,.52);
+}
+.g-method-card h3{
+  font-size:17px;
+  font-weight:700;
+  line-height:1.3;
+  margin-bottom:8px;
+}
+.g-method-card p{
+  font-size:13px;
+  line-height:1.75;
+  color:rgba(245,247,251,.56);
+}
+
+/* ── Step cards ── */
+.g-steps{
+  display:grid;
+  gap:10px;
+  margin-bottom:24px;
+}
+.g-step{
+  display:grid;
+  grid-template-columns:40px 1fr;
+  gap:16px;
+  align-items:start;
+  padding:18px 20px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.07);
+  background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+  transition:border-color .18s ease;
+}
+.g-step:hover{ border-color:rgba(163,197,255,.14); }
+.g-step-num{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg, rgba(163,197,255,.15), rgba(163,197,255,.07));
+  border:1px solid rgba(163,197,255,.18);
+  font:700 13px/1 var(--mono);
+  color:#c8ddf7;
+  flex-shrink:0;
+}
+.g-step-body h4{
+  font-size:15px;
+  font-weight:700;
+  margin-bottom:6px;
+  line-height:1.35;
+}
+.g-step-body > p{
+  font-size:13.5px;
+  line-height:1.78;
+  color:rgba(245,247,251,.6);
+  margin-bottom:8px;
+}
+
+/* ── Code ── */
+.g-code{
+  display:block;
+  padding:13px 16px;
+  border-radius:11px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  font:500 12.5px/1.6 var(--mono);
+  color:#c8ddf7;
+  margin:8px 0 12px;
+  overflow-x:auto;
+  white-space:pre;
+}
+code.g-inline{
+  font-family:var(--mono);
+  font-size:.88em;
+  color:#c8ddf7;
+  background:rgba(163,197,255,.09);
+  padding:2px 6px;
+  border-radius:5px;
+}
+
+/* ── Table ── */
+.g-table{
+  width:100%;
+  border-collapse:collapse;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.08);
+  margin:12px 0 16px;
+  font-size:13px;
+}
+.g-table th{
+  padding:10px 14px;
+  text-align:left;
+  background:rgba(255,255,255,.05);
+  font:700 10px/1 var(--mono);
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:rgba(245,247,251,.52);
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.g-table td{
+  padding:11px 14px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  color:rgba(245,247,251,.72);
+  line-height:1.6;
+}
+.g-table tr:last-child td{ border-bottom:none; }
+.g-table td:first-child{
+  color:rgba(163,197,255,.86);
+  font-family:var(--mono);
+  font-size:12px;
+}
+
+/* ── Path cards ── */
+.g-paths-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:14px;
+  margin-bottom:24px;
+}
+.g-path-card{
+  padding:22px 20px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.09);
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  transition:all .2s ease;
+}
+.g-path-card:hover{
+  transform:translateY(-2px);
+  border-color:rgba(163,197,255,.18);
+}
+.g-path-label{
+  font:700 10px/1 var(--mono);
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  margin-bottom:10px;
+}
+.g-path-card:nth-child(1) .g-path-label{ color:rgba(163,197,255,.8); }
+.g-path-card:nth-child(2) .g-path-label{ color:rgba(231,199,139,.8); }
+.g-path-card:nth-child(3) .g-path-label{ color:rgba(217,185,167,.8); }
+.g-path-card h4{
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:8px;
+  line-height:1.3;
+}
+.g-path-card > p{
+  font-size:13px;
+  line-height:1.72;
+  color:rgba(245,247,251,.58);
+  margin-bottom:12px;
+}
+.g-path-tag{
+  display:inline-flex;
+  padding:5px 9px;
+  border-radius:999px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.07);
+  font:600 10px/1 var(--mono);
+  color:rgba(245,247,251,.52);
+}
+
+/* ── FAQ accordion ── */
+.g-faq{ display:grid; gap:8px; }
+.g-faq-item{
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.015));
+  overflow:hidden;
+}
+.g-faq-q{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:15px 18px;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:600;
+  line-height:1.5;
+  transition:background .16s ease;
+  user-select:none;
+  color:rgba(245,247,251,.84);
+}
+.g-faq-q:hover{ background:rgba(255,255,255,.03); }
+.g-faq-chevron{
+  width:22px;
+  height:22px;
+  flex-shrink:0;
+  display:grid;
+  place-items:center;
+  border-radius:6px;
+  background:rgba(255,255,255,.06);
+  color:rgba(245,247,251,.48);
+  font-size:11px;
+  transition:transform .2s ease;
+}
+.g-faq-item.open .g-faq-chevron{ transform:rotate(180deg); }
+.g-faq-a{
+  display:none;
+  padding:2px 18px 16px;
+  font-size:13.5px;
+  line-height:1.84;
+  color:rgba(245,247,251,.62);
+}
+.g-faq-item.open .g-faq-a{ display:block; }
+
+/* ── Tips list ── */
+.g-tips{ display:grid; gap:10px; margin-bottom:4px; }
+.g-tip{
+  display:grid;
+  grid-template-columns:32px 1fr;
+  gap:14px;
+  align-items:start;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.03);
+}
+.g-tip-icon{
+  width:32px;
+  height:32px;
+  border-radius:9px;
+  display:grid;
+  place-items:center;
+  font-size:15px;
+  background:rgba(255,255,255,.05);
+}
+.g-tip strong{
+  display:block;
+  font-size:13.5px;
+  margin-bottom:3px;
+}
+.g-tip p{
+  font-size:13px;
+  line-height:1.7;
+  color:rgba(245,247,251,.58);
+}
+
+/* ── Guide responsive ── */
+@media (max-width:900px){
+  .guide-content{ padding:36px 22px 80px; }
+  .nav-guide-btn{ display:none; }
+}
+@media (max-width:640px){
+  .g-method-grid{ grid-template-columns:1fr; }
+  .g-paths-grid{ grid-template-columns:1fr; }
+  .guide-topbar{ padding:0 18px; gap:10px; }
+  .guide-topbar-title{ font-size:11px; }
+  .guide-version-badge{ display:none; }
+}
 </style>
 </head>
 <body>
@@ -3491,6 +3909,7 @@ footer{
       <a href="#scenarios">场景价值</a>
       <a href="#architecture">产品形态</a>
     </div>
+    <button class="nav-guide-btn" id="nav-guide-btn">安装指南</button>
     <a class="nav-cta" href="#cta">获取试点方案</a>
   </div>
 </nav>
@@ -4374,7 +4793,7 @@ footer{
             <rect x="46" y="320" width="540" height="222" rx="24" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.08)"/>
             <rect x="594" y="320" width="540" height="222" rx="24" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.08)"/>
 
-            <text x="316" y="354" fill="#D9E7FF" font-size="18" font-family="IBM Plex Mono" text-anchor="middle">jiyibao-wiki Skill</text>
+            <text x="316" y="354" fill="#D9E7FF" font-size="18" font-family="IBM Plex Mono" text-anchor="middle">ai-yunxin-jiyibao Skill</text>
             <text x="316" y="382" fill="rgba(245,247,251,.72)" font-size="14" font-family="Noto Sans SC" text-anchor="middle">个人知识采编引擎</text>
             <rect x="84" y="408" width="212" height="92" rx="18" fill="rgba(163,197,255,.08)" stroke="rgba(163,197,255,.18)"/>
             <rect x="336" y="408" width="212" height="92" rx="18" fill="rgba(231,199,139,.08)" stroke="rgba(231,199,139,.18)"/>
@@ -4503,6 +4922,403 @@ footer{
   </section>
 </main>
 
+<!-- ══════════════════════════════════════════
+     安装指南视图（#guide hash 触发）
+══════════════════════════════════════════ -->
+<div class="guide-view" id="guide-view">
+
+  <!-- Topbar -->
+  <div class="guide-topbar">
+    <button class="guide-back-btn" id="guide-back-btn">← 产品介绍</button>
+    <div class="guide-topbar-title">记忆宝 · 新用户安装与体验指南</div>
+    <div class="guide-version-badge">v2.3 · 2026-05-22</div>
+  </div>
+
+  <!-- Main content (single column) -->
+    <!-- Main content -->
+    <main class="guide-content" id="guide-content">
+      <div class="guide-content-inner">
+
+        <!-- 01 先理解它 -->
+        <section class="g-section" id="g-intro">
+          <div class="g-eyebrow">01 · 先理解它</div>
+          <h2>用一句话理解记忆宝</h2>
+          <p>记忆宝会把你的会议、录音、转写文本自动接入处理链路，完成转写、纪要整理、主动提醒，并继续做基于会议内容的知识编译与管理。</p>
+          <div class="g-info-box">
+            <strong style="display:block;margin-bottom:7px;">和普通纪要工具的区别</strong>
+            普通工具只是"整理完给你一份结果"。<br>
+            记忆宝从采集开始持续工作：自动承接 → 自动编译 → 主动提醒 → 继续可追问 → 长期可管理。<br>
+            最终留下的不是一份孤立纪要，而是可以持续积累和复用的<strong>个人知识资产</strong>。
+          </div>
+        </section>
+
+        <div class="g-divider"></div>
+
+        <!-- 02 安装方式 -->
+        <section class="g-section" id="g-install">
+          <div class="g-eyebrow">02 · 安装方式</div>
+          <h2>先分清两种安装方式</h2>
+          <p>拿到记忆宝后，有两种安装方式可以选择。无论走哪种，你拿到的都必须是 <code class="g-inline">clean-room 包</code>，避免沿用发包人的账号配置。</p>
+          <div class="g-method-grid">
+            <div class="g-method-card primary">
+              <div class="g-method-badge main">✦ 主推方式</div>
+              <h3>帝王蟹 Skill 市场<br>一键安装</h3>
+              <p>适合安装到自己的云端蟹蟹或本地 OpenClaw 环境。装好就能直接开始体验，无需手动配置文件。</p>
+            </div>
+            <div class="g-method-card">
+              <div class="g-method-badge alt">备选方式</div>
+              <h3>拿到 zip 包后<br>本地解压安装</h3>
+              <p>适合需要手动调试、排障，或自行运行初始化脚本的同事。</p>
+            </div>
+          </div>
+        </section>
+
+        <div class="g-divider"></div>
+
+        <!-- 03 Skill 市场安装 -->
+        <section class="g-section" id="g-market">
+          <div class="g-eyebrow">03 · 主推方式</div>
+          <h2>帝王蟹 Skill 市场安装</h2>
+          <p>这是最省事的方式。安装完成后，记忆宝工作在你自己的运行环境里，不会混用别人的账号和配置。</p>
+
+          <div class="g-steps">
+            <div class="g-step">
+              <div class="g-step-num">01</div>
+              <div class="g-step-body">
+                <h4>在 Skill 市场搜索并安装</h4>
+                <p>在帝王蟹 Skill 市场搜索「记忆宝」点击安装，或直接在对话里输入：</p>
+                <code class="g-code">/skill install ai-yunxin-jiyibao</code>
+              </div>
+            </div>
+            <div class="g-step">
+              <div class="g-step-num">02</div>
+              <div class="g-step-body">
+                <h4>装完后先说一句话</h4>
+                <p>不需要研究命令，直接对记忆宝说任意一句即可启动引导：</p>
+                <code class="g-code">帮助 / 开始 / 你好</code>
+              </div>
+            </div>
+            <div class="g-step">
+              <div class="g-step-num">03</div>
+              <div class="g-step-body">
+                <h4>自动检查基础条件</h4>
+                <p>第一次进入对话时，记忆宝会帮你检查以下几项：</p>
+                <table class="g-table">
+                  <thead><tr><th>检查项</th><th>说明</th></tr></thead>
+                  <tbody>
+                    <tr><td>.env 初始化</td><td>知识库路径、账号配置是否就绪</td></tr>
+                    <tr><td>OpenClaw CLI</td><td>是否可正常调用</td></tr>
+                    <tr><td>Gateway</td><td>OpenClaw Gateway 是否在线</td></tr>
+                    <tr><td>私聊提醒目标</td><td>OPENCLAW_TARGET 是否已配置</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="g-step">
+              <div class="g-step-num">04</div>
+              <div class="g-step-body">
+                <h4>按提示补齐你自己的信息</h4>
+                <div class="g-info-box" style="margin-top:8px;">
+                  <strong style="display:block;margin-bottom:5px;">网易员工（已有 userUuid）</strong>
+                  只需提供你自己的 <code class="g-inline">userUuid</code>，其余三项自动写入固定值。
+                </div>
+                <div class="g-info-box" style="margin-top:8px;background:linear-gradient(180deg,rgba(231,199,139,.07),rgba(231,199,139,.03));border-color:rgba(231,199,139,.16);">
+                  <strong style="display:block;margin-bottom:5px;">网易员工（还没有会议账号）</strong>
+                  直接继续安装，首次真正使用秒录时系统会自动创建账号并返回你的 userUuid。
+                </div>
+                <div class="g-info-box" style="margin-top:8px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border-color:rgba(255,255,255,.08);">
+                  <strong style="display:block;margin-bottom:5px;">非网易员工</strong>
+                  需要补齐完整四项：NE_MEETING_APP_KEY / APP_SECRET / CORP_CODE / USER_UUID。
+                </div>
+              </div>
+            </div>
+            <div class="g-step">
+              <div class="g-step-num">05</div>
+              <div class="g-step-body">
+                <h4>从路径 A 开始体验</h4>
+                <p>基础条件补齐后，建议先走<strong>路径 A（粘贴文字直接出纪要）</strong>确认链路正常，再测网易会议秒录。详见第 05 节。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="g-divider"></div>
+
+        <!-- 04 本地安装 -->
+        <section class="g-section" id="g-local">
+          <div class="g-eyebrow">04 · 备选方式</div>
+          <h2>本地 zip 包安装</h2>
+          <p>如果你拿到了 zip 压缩包，需要手动在本地安装，按以下步骤操作。</p>
+          <div class="g-warn-box">
+            <strong style="display:block;margin-bottom:5px;">安装前确认</strong>
+            ① 电脑已安装 OpenClaw，可正常使用 IM 私聊 &nbsp; ② 已安装 Python 3 &nbsp; ③ 知道自己的接收目标（企业邮箱或平台 ID）
+          </div>
+          <div class="g-steps">
+            <div class="g-step">
+              <div class="g-step-num">01</div>
+              <div class="g-step-body">
+                <h4>进入解压目录</h4>
+                <code class="g-code">cd /你的路径/ai-yunxin-jiyibao-clean-room</code>
+              </div>
+            </div>
+            <div class="g-step">
+              <div class="g-step-num">02</div>
+              <div class="g-step-body">
+                <h4>运行初始化脚本</h4>
+                <code class="g-code">python3 scripts/install.py</code>
+                <p>脚本会逐步引导你填写配置。看到以下提示即完成：</p>
+                <code class="g-code">✓ 记忆宝已完成安装初始化。</code>
+                <p>填写说明：选「是网易员工」后只需填你的 userUuid；B100 如无设备可填 n 跳过；接收目标填你自己的企业邮箱或平台 ID。</p>
+              </div>
+            </div>
+            <div class="g-step">
+              <div class="g-step-num">03</div>
+              <div class="g-step-body">
+                <h4>运行自检</h4>
+                <code class="g-code">python3 scripts/auto/setup.py</code>
+                <p>重点看：<code class="g-inline">openclaw CLI</code> · <code class="g-inline">Gateway</code> · <code class="g-inline">OpenClaw IM</code> · <code class="g-inline">OpenClaw agent</code></p>
+              </div>
+            </div>
+            <div class="g-step">
+              <div class="g-step-num">04</div>
+              <div class="g-step-body">
+                <h4>打开自动提醒</h4>
+                <code class="g-code">python3 scripts/auto/install_openclaw.py install</code>
+                <p>确认状态正常：</p>
+                <code class="g-code">python3 scripts/auto/install_openclaw.py status</code>
+                <p>看到 <code class="g-inline">skill 已同步: 是</code> 和任务 <code class="g-inline">ai-yunxin-jiyibao-auto-poller</code>，即安装完成。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="g-divider"></div>
+
+        <!-- 05 体验路径 -->
+        <section class="g-section" id="g-paths">
+          <div class="g-eyebrow">05 · 体验路径</div>
+          <h2>第一次体验，选一条路径开始</h2>
+          <p>安装完成后，从以下三条路径里选一条。建议按顺序来：A 最快，B 最能体现核心价值，C 需要 B100 设备。</p>
+
+          <div class="g-paths-grid">
+            <div class="g-path-card">
+              <div class="g-path-label">路径 A · 最快</div>
+              <h4>粘贴文字<br>直接出纪要</h4>
+              <p>不需要开会，不需要录音。粘贴一段现成文字，发"帮我整理成纪要"，立刻看到效果。</p>
+              <div class="g-path-tag">1 分钟内见效果</div>
+            </div>
+            <div class="g-path-card">
+              <div class="g-path-label">路径 B · 推荐</div>
+              <h4>测试网易会议<br>秒录</h4>
+              <p>开一场 3–5 分钟测试会，手动打开「秒录」，结束后等两条消息推送：转写就绪 + AI 纪要就绪。</p>
+              <div class="g-path-tag">体验完整自动链路</div>
+            </div>
+            <div class="g-path-card">
+              <div class="g-path-label">路径 C · 进阶</div>
+              <h4>测试 B100<br>录音设备</h4>
+              <p>有 B100 设备时才走这条。录 3–5 分钟，等设备同步，同样会收到两条消息推送。</p>
+              <div class="g-path-tag">需要 B100 设备</div>
+            </div>
+          </div>
+
+          <div class="g-info-box">
+            <strong style="display:block;margin-bottom:7px;">路径 B 详细步骤</strong>
+            1. 确认你有可用的网易会议账号（或允许系统首次使用时自动创建）<br>
+            2. 打开网易会议，开一场测试会，<strong>手动打开「秒录」</strong><br>
+            3. 正常结束会议<br>
+            4. 等待 OpenClaw IM 私聊收到：① 转写已完成 &nbsp; ② AI 纪要已就绪
+          </div>
+        </section>
+
+        <div class="g-divider"></div>
+
+        <!-- 06 纪要后续 -->
+        <section class="g-section" id="g-after">
+          <div class="g-eyebrow">06 · 收到纪要后</div>
+          <h2>纪要只是起点，还可以继续</h2>
+          <p>收到「AI 纪要已就绪」后，不是结束，而是刚开始。可以直接继续对话，做更深层的加工：</p>
+          <div class="g-tips">
+            <div class="g-tip">
+              <div class="g-tip-icon">📋</div>
+              <div><strong>提炼待办</strong><p>从纪要里自动提取需要跟进的所有事项。</p></div>
+            </div>
+            <div class="g-tip">
+              <div class="g-tip-icon">✂️</div>
+              <div><strong>给我 3 行结论版</strong><p>生成适合快速分享给领导的极简摘要。</p></div>
+            </div>
+            <div class="g-tip">
+              <div class="g-tip-icon">🔄</div>
+              <div><strong>改成客户拜访模板</strong><p>用指定场景模板重新整理纪要结构。</p></div>
+            </div>
+            <div class="g-tip">
+              <div class="g-tip-icon">⚠️</div>
+              <div><strong>抽出所有风险点</strong><p>专门聚焦风险信号，方便管理层快速阅读。</p></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="g-divider"></div>
+
+        <!-- 07 提醒配置 -->
+        <section class="g-section" id="g-notify">
+          <div class="g-eyebrow">07 · 提醒配置</div>
+          <h2>默认提醒方式</h2>
+          <p>新用户只要把 OpenClaw IM 私聊跑通就够了。其他两种方式只有你明确需要时再配置。</p>
+          <div class="g-tips">
+            <div class="g-tip">
+              <div class="g-tip-icon">💬</div>
+              <div><strong>OpenClaw IM 私聊（主推，必配）</strong><p>所有主动推送都通过这个通道。新用户把这条跑通即可。</p></div>
+            </div>
+            <div class="g-tip">
+              <div class="g-tip-icon">📢</div>
+              <div><strong>POPO 群机器人（可选）</strong><p>只有你需要把纪要推送到特定群时再配置。</p></div>
+            </div>
+            <div class="g-tip">
+              <div class="g-tip-icon">📧</div>
+              <div><strong>个人邮箱（可选）</strong><p>只有你需要邮件备份时再配置。</p></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="g-divider"></div>
+
+        <!-- 08 FAQ -->
+        <section class="g-section" id="g-faq">
+          <div class="g-eyebrow">08 · 常见问题</div>
+          <h2>FAQ</h2>
+          <div class="g-faq">
+
+            <div class="g-faq-item open">
+              <div class="g-faq-q">为什么我收不到提醒？<span class="g-faq-chevron">▾</span></div>
+              <div class="g-faq-a">
+                按以下顺序检查：<br><br>
+                1. 对记忆宝说 <code class="g-inline">帮助</code>，看有没有提示缺失 .env / 知识库路径 / Gateway / OPENCLAW_TARGET<br>
+                2. 确认已执行过 <code class="g-inline">install_openclaw.py install</code><br>
+                3. 确认状态里有 <code class="g-inline">ai-yunxin-jiyibao-auto-poller</code><br>
+                4. 确认 <code class="g-inline">OPENCLAW_TARGET</code> 填的是你自己的目标<br>
+                5. 注意：安装前已存在的老会议、老录音不会触发主动推送
+              </div>
+            </div>
+
+            <div class="g-faq-item">
+              <div class="g-faq-q">网易会议秒录没有反应？<span class="g-faq-chevron">▾</span></div>
+              <div class="g-faq-a">
+                1. 确认在会议里<strong>手动打开了「秒录」</strong>（不是自动的）<br>
+                2. 确认会议已经正常结束<br>
+                3. 检查 .env 里 <code class="g-inline">AUTO_ENABLE_NE_MEETING=true</code><br>
+                4. 非网易员工需要补齐完整四项凭证
+              </div>
+            </div>
+
+            <div class="g-faq-item">
+              <div class="g-faq-q">B100 没有反应？<span class="g-faq-chevron">▾</span></div>
+              <div class="g-faq-a">
+                1. 确认填的是<strong>你自己的</strong> B100 账号密码，不是别人的<br>
+                2. 确认录音已同步到服务端<br>
+                3. 检查 .env 里 <code class="g-inline">AUTO_ENABLE_B100=true</code>
+              </div>
+            </div>
+
+            <div class="g-faq-item">
+              <div class="g-faq-q">自检说 Gateway 不可达怎么办？<span class="g-faq-chevron">▾</span></div>
+              <div class="g-faq-a">
+                这通常说明 OpenClaw 自身没正常起来。先确认 OpenClaw 是否正常运行，再重新执行：<br>
+                <code class="g-code">python3 scripts/auto/setup.py</code>
+              </div>
+            </div>
+
+            <div class="g-faq-item">
+              <div class="g-faq-q">非网易员工只填了 userUuid，可以吗？<span class="g-faq-chevron">▾</span></div>
+              <div class="g-faq-a">
+                不可以。非网易员工需要补齐完整四项：<br>
+                <code class="g-inline">NE_MEETING_APP_KEY</code> / <code class="g-inline">NE_MEETING_APP_SECRET</code> / <code class="g-inline">NE_MEETING_CORP_CODE</code> / <code class="g-inline">NE_MEETING_USER_UUID</code><br><br>
+                网易员工但还没有会议账号的，可以先继续安装，系统会在首次触发秒录时自动创建账号。
+              </div>
+            </div>
+
+            <div class="g-faq-item">
+              <div class="g-faq-q">我担心会沿用别人的账号配置？<span class="g-faq-chevron">▾</span></div>
+              <div class="g-faq-a">
+                clean-room 包已清除所有用户态字段：OPENCLAW_TARGET、NE_MEETING_USER_UUID、B100 账密、SMTP/POPO 提醒账号全部为空，不会沿用发包人的任何配置。
+              </div>
+            </div>
+
+            <div class="g-faq-item">
+              <div class="g-faq-q">不想测 B100，可以先跳过吗？<span class="g-faq-chevron">▾</span></div>
+              <div class="g-faq-a">
+                可以。第一次体验完全可以只走路径 A（粘贴文字）和路径 B（网易会议秒录），B100 不是首次体验的必选项。
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <div class="g-divider"></div>
+
+        <!-- 09 最简建议 -->
+        <section class="g-section" id="g-quick">
+          <div class="g-eyebrow">09 · 最简上手建议</div>
+          <h2>第一次上手，推荐这个顺序</h2>
+          <div class="g-steps">
+            <div class="g-step">
+              <div class="g-step-num">1</div>
+              <div class="g-step-body">
+                <h4>Skill 市场安装，或直接输入命令</h4>
+                <code class="g-code">/skill install ai-yunxin-jiyibao</code>
+              </div>
+            </div>
+            <div class="g-step">
+              <div class="g-step-num">2</div>
+              <div class="g-step-body">
+                <h4>装完对记忆宝说"帮助"</h4>
+                <p>查看有没有缺失的基础条件，按提示补齐。</p>
+              </div>
+            </div>
+            <div class="g-step">
+              <div class="g-step-num">3</div>
+              <div class="g-step-body">
+                <h4>先走路径 A：粘贴文字直接出纪要</h4>
+                <p>最快确认基础链路是否正常，1 分钟内见效果。</p>
+              </div>
+            </div>
+            <div class="g-step">
+              <div class="g-step-num">4</div>
+              <div class="g-step-body">
+                <h4>再走路径 B：测试网易会议秒录</h4>
+                <p>体验完整自动链路：会议 → 转写 → 纪要 → 主动推送。</p>
+              </div>
+            </div>
+            <div class="g-step">
+              <div class="g-step-num">5</div>
+              <div class="g-step-body">
+                <h4>只有需要本地排障时，再走 zip 手动安装</h4>
+                <p>参考第 04 节。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="g-divider"></div>
+
+        <!-- 10 排障 -->
+        <section class="g-section" id="g-debug">
+          <div class="g-eyebrow">10 · 排障指引</div>
+          <h2>出问题时，优先运行这两条</h2>
+          <p>如果你走的是本地手动安装，装完还是不确定哪里有问题，最有价值的是把下面两条结果发给帮你支持的人：</p>
+          <code class="g-code">python3 scripts/auto/install_openclaw.py status
+python3 scripts/auto/install_openclaw.py logs</code>
+          <p>这两条基本能定位大部分安装和自动推送问题。</p>
+          <div class="g-info-box" style="margin-top:16px;">
+            <strong style="display:block;margin-bottom:6px;">如果走的是 Skill 市场安装</strong>
+            优先把记忆宝首次回复里提示的缺失项截图发出来，也很容易定位问题。
+          </div>
+        </section>
+
+      </div><!-- /.guide-content-inner -->
+    </main><!-- /.guide-content -->
+
+  </div><!-- /.guide-view -->
+
 <footer>
   <div class="container footer-inner">
     <div class="brand">
@@ -4556,6 +5372,47 @@ tabs.forEach((tab) => {
     const id = tab.dataset.panel;
     tabs.forEach((item) => item.classList.toggle('active', item === tab));
     panels.forEach((panel) => panel.classList.toggle('active', panel.id === id));
+  });
+});
+
+// ── Guide view switcher ──────────────────────────
+const guideView     = document.getElementById('guide-view');
+const guideBackBtn  = document.getElementById('guide-back-btn');
+const navGuideBtn   = document.getElementById('nav-guide-btn');
+const guideSections = document.querySelectorAll('.g-section');
+
+const siteNav = document.getElementById('site-nav');
+
+function openGuide() {
+  guideView.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  if (siteNav) siteNav.style.display = 'none';   // 隐藏原有 nav，彻底消除层叠干扰
+  history.replaceState(null, '', '#guide');
+  guideView.scrollTop = 0;
+}
+
+function closeGuide() {
+  guideView.classList.remove('active');
+  document.body.style.overflow = '';
+  if (siteNav) siteNav.style.display = '';        // 恢复原有 nav
+  history.replaceState(null, '', location.pathname);
+}
+
+if (navGuideBtn)  navGuideBtn.addEventListener('click', openGuide);
+if (guideBackBtn) guideBackBtn.addEventListener('click', closeGuide);
+
+// Esc 关闭
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && guideView.classList.contains('active')) closeGuide();
+});
+
+// 初始化时检查 hash
+if (location.hash === '#guide') openGuide();
+
+// FAQ 折叠
+document.querySelectorAll('.g-faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    q.closest('.g-faq-item').classList.toggle('open');
   });
 });
 </script>
