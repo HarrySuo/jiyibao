@@ -4931,7 +4931,7 @@ code.g-inline{
   <div class="guide-topbar">
     <button class="guide-back-btn" id="guide-back-btn">← 产品介绍</button>
     <div class="guide-topbar-title">记忆宝 · 新用户安装与体验指南</div>
-    <div class="guide-version-badge">v2.3 · 2026-05-22</div>
+    <div class="guide-version-badge">v2.5 · 2026-05-25</div>
   </div>
 
   <!-- Main content (single column) -->
@@ -4985,8 +4985,12 @@ code.g-inline{
             <div class="g-step">
               <div class="g-step-num">01</div>
               <div class="g-step-body">
-                <h4>在 Skill 市场搜索并安装</h4>
-                <p>在帝王蟹 Skill 市场搜索「记忆宝」点击安装，或直接在对话里输入：</p>
+                <h4>通过安装链接一键推送（最快）</h4>
+                <p>点击以下链接，在 Skill 介绍页选择「安装到我的蟹蟹」或「安装到龙虾」，即完成安装，无需手动搜索。</p>
+                <div class="g-info-box" style="margin-top:8px;margin-bottom:10px;">
+                  <strong>Skill 安装链接：</strong><span style="opacity:.55;">[@找所长提供]</span>
+                </div>
+                <p>也可以在帝王蟹 Skill 市场搜索「记忆宝」，或在对话里输入：</p>
                 <code class="g-code">/skill install ai-yunxin-jiyibao</code>
               </div>
             </div>
@@ -5035,8 +5039,8 @@ code.g-inline{
             <div class="g-step">
               <div class="g-step-num">05</div>
               <div class="g-step-body">
-                <h4>从路径 A 开始体验</h4>
-                <p>基础条件补齐后，建议先走<strong>路径 A（粘贴文字直接出纪要）</strong>确认链路正常，再测网易会议秒录。详见第 05 节。</p>
+                <h4>选择你的使用路径</h4>
+                <p>基础条件补齐后，建议先走<strong>路径三（直接输入内容）</strong>确认链路正常，再根据你的场景选 B100 或秒录。详见第 05 节。</p>
               </div>
             </div>
           </div>
@@ -5094,39 +5098,90 @@ code.g-inline{
 
         <div class="g-divider"></div>
 
-        <!-- 05 体验路径 -->
+        <!-- 05 使用方式 -->
         <section class="g-section" id="g-paths">
-          <div class="g-eyebrow">05 · 体验路径</div>
-          <h2>第一次体验，选一条路径开始</h2>
-          <p>安装完成后，从以下三条路径里选一条。建议按顺序来：A 最快，B 最能体现核心价值，C 需要 B100 设备。</p>
+          <div class="g-eyebrow">05 · 使用方式</div>
+          <h2>选择你的使用路径</h2>
+          <p>选定路径后，按步骤从头走到尾，不需要在章节间反复跳转。</p>
 
           <div class="g-paths-grid">
             <div class="g-path-card">
-              <div class="g-path-label">路径 A · 最快</div>
-              <h4>粘贴文字<br>直接出纪要</h4>
-              <p>不需要开会，不需要录音。粘贴一段现成文字，发"帮我整理成纪要"，立刻看到效果。</p>
-              <div class="g-path-tag">1 分钟内见效果</div>
+              <div class="g-path-label">路径一 · 主推</div>
+              <h4>B100 硬件录音</h4>
+              <p>设备录音 → 自动上传 → 自动转写 → 纪要推送，全程无感知。</p>
+              <div class="g-path-tag">需要 B100 设备</div>
             </div>
             <div class="g-path-card">
-              <div class="g-path-label">路径 B · 推荐</div>
-              <h4>测试网易会议<br>秒录</h4>
-              <p>开一场 3–5 分钟测试会，手动打开「秒录」，结束后等两条消息推送：转写就绪 + AI 纪要就绪。</p>
+              <div class="g-path-label">路径二 · 推荐</div>
+              <h4>网易会议秒录</h4>
+              <p>开启秒录 → 会议结束 → 纪要自动送达，无需额外操作。</p>
               <div class="g-path-tag">体验完整自动链路</div>
             </div>
             <div class="g-path-card">
-              <div class="g-path-label">路径 C · 进阶</div>
-              <h4>测试 B100<br>录音设备</h4>
-              <p>有 B100 设备时才走这条。录 3–5 分钟，等设备同步，同样会收到两条消息推送。</p>
-              <div class="g-path-tag">需要 B100 设备</div>
+              <div class="g-path-label">路径三 · 最快</div>
+              <h4>直接输入内容</h4>
+              <p>粘贴文字、上传音视频或文档，最快 1 分钟出纪要。</p>
+              <div class="g-path-tag">无需额外设备 · 立即可用</div>
             </div>
           </div>
 
-          <div class="g-info-box">
-            <strong style="display:block;margin-bottom:7px;">路径 B 详细步骤</strong>
-            1. 确认你有可用的网易会议账号（或允许系统首次使用时自动创建）<br>
-            2. 打开网易会议，开一场测试会，<strong>手动打开「秒录」</strong><br>
-            3. 正常结束会议<br>
-            4. 等待 OpenClaw IM 私聊收到：① 转写已完成 &nbsp; ② AI 纪要已就绪
+          <!-- 路径一：B100 -->
+          <div class="g-info-box" style="margin-top:24px;">
+            <strong style="display:block;margin-bottom:10px;">路径一：B100 硬件录音 — 完整步骤</strong>
+
+            <strong style="display:block;margin:4px 0;">① 手机蓝牙配对（BT PAN）</strong>
+            B100 通过蓝牙 BT PAN 借用手机网络上传录音，配对后数据自动同步，无需登录后台。<br>
+            蓝牙设备名：<code class="g-inline">CAPSO-XXXX</code>（后四位为设备编号）<br><br>
+            <strong>iPhone：</strong>设置→个人热点→开「最大兼容性」+「允许其他人加入」→ 重启蓝牙 → 找到 CAPSO-XXXX 点击连接 → 显示「已连接」完成<br>
+            <strong>华为：</strong>重启蓝牙 → 找到 CAPSO-XXXX 配对 → 移动网络→个人热点→更多共享设置→开「通过蓝牙共享网络」→ 等约10秒显示「已连接」<br>
+            <strong>其他安卓：</strong>重启蓝牙 → 找到 CAPSO-XXXX 配对 → 个人热点→开「通过蓝牙共享网络」→ 等约10秒显示「已连接」<br>
+            <em style="opacity:.65;">若10秒内未稳定连接，删除蓝牙设备从第一步重试。</em>
+
+            <strong style="display:block;margin:12px 0 4px;">② 配置 B100 账号</strong>
+            市场安装用户：首次使用时 skill 引导填写账号和密码。本地安装用户：在 <code class="g-inline">.env</code> 填写 <code class="g-inline">B100_USERNAME</code> / <code class="g-inline">B100_PASSWORD</code>，并设置 <code class="g-inline">AUTO_ENABLE_B100=true</code>。
+
+            <strong style="display:block;margin:12px 0 4px;">③ 录音操作</strong>
+            长按开机（红灯亮）→ 短按暂停（黄灯）/ 短按恢复（红灯）→ 长按停止（红灯灭）<br>
+            停止后保持手机热点在线，录音自动上传。
+
+            <strong style="display:block;margin:12px 0 4px;">④ 等两条消息</strong>
+            正常情况下，你会在 OpenClaw IM 私聊收到：① 转写已完成 &nbsp; ② AI 纪要已就绪
+          </div>
+
+          <!-- 路径二：秒录 -->
+          <div class="g-info-box" style="margin-top:12px;">
+            <strong style="display:block;margin-bottom:10px;">路径二：网易会议秒录 — 完整步骤</strong>
+
+            <strong style="display:block;margin-bottom:6px;">① 确认会议账号</strong>
+            <table class="g-table">
+              <thead><tr><th>情况</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr><td>网易员工，已有账号</td><td>提供 userUuid，其余三项自动写入</td></tr>
+                <tr><td>网易员工，还没有账号</td><td>先继续，首次触发时系统自动创建，返回 userUuid / password / corpCode</td></tr>
+                <tr><td>非网易员工</td><td>手动补齐 APP_KEY / APP_SECRET / CORP_CODE / USER_UUID</td></tr>
+              </tbody>
+            </table>
+            <p style="margin-top:8px;">确认 <code class="g-inline">.env</code> 中：<code class="g-inline">AUTO_ENABLE_NE_MEETING=true</code></p>
+
+            <strong style="display:block;margin:12px 0 4px;">② 开一场测试会议</strong>
+            打开网易会议 → 开 3–5 分钟测试会 → <strong>手动打开「秒录」</strong> → 正常结束会议
+
+            <strong style="display:block;margin:12px 0 4px;">③ 等两条消息</strong>
+            正常情况下，你会在 OpenClaw IM 私聊收到：① 转写已完成 &nbsp; ② AI 纪要已就绪
+          </div>
+
+          <!-- 路径三：直接输入 -->
+          <div class="g-info-box" style="margin-top:12px;">
+            <strong style="display:block;margin-bottom:10px;">路径三：直接输入内容 — 支持的输入类型</strong>
+            <table class="g-table">
+              <thead><tr><th>输入类型</th><th>操作方法</th></tr></thead>
+              <tbody>
+                <tr><td>会议文字记录 / 聊天纪要</td><td>粘贴文字，发送「帮我整理成纪要」</td></tr>
+                <tr><td>离线音频（.m4a .mp3 .wav .aac .flac）</td><td>直接上传文件，自动转写并整理</td></tr>
+                <tr><td>离线视频（.mp4）</td><td>直接上传文件，自动提取音频并转写</td></tr>
+                <tr><td>文档文件（.txt .md .docx）</td><td>直接上传文件，自动解析并整理</td></tr>
+              </tbody>
+            </table>
           </div>
         </section>
 
@@ -5213,9 +5268,18 @@ code.g-inline{
             <div class="g-faq-item">
               <div class="g-faq-q">B100 没有反应？<span class="g-faq-chevron">▾</span></div>
               <div class="g-faq-a">
-                1. 确认填的是<strong>你自己的</strong> B100 账号密码，不是别人的<br>
-                2. 确认录音已同步到服务端<br>
-                3. 检查 .env 里 <code class="g-inline">AUTO_ENABLE_B100=true</code>
+                <strong>第一步：确认蓝牙配对是否正确完成</strong><br>
+                1. 手机蓝牙设备列表里，<code class="g-inline">CAPSO-XXXX</code> 是否显示「<strong>已连接</strong>」（不是"已配对"）<br>
+                2. 手机个人热点是否已开启<br>
+                3. iPhone 用户：设置→个人热点，确认「允许其他人加入」和「最大兼容性」已打开<br>
+                4. 华为/安卓用户：设置→个人热点→更多共享设置，确认「通过蓝牙共享网络」已打开<br>
+                若显示"已配对"但未连接，删除设备重新配对（参考第 05 节路径一）<br><br>
+                <strong>第二步：确认录音已完成且有上传机会</strong><br>
+                5. 录音是否已正常结束（长按停止，红灯熄灭）<br>
+                6. 录音结束时手机热点是否在线——热点不在线则等恢复后自动同步<br><br>
+                <strong>第三步：确认 skill 配置</strong><br>
+                7. 填的是不是<strong>你自己的</strong> B100 账号密码<br>
+                8. 检查 .env 里 <code class="g-inline">AUTO_ENABLE_B100=true</code>
               </div>
             </div>
 
@@ -5246,7 +5310,7 @@ code.g-inline{
             <div class="g-faq-item">
               <div class="g-faq-q">不想测 B100，可以先跳过吗？<span class="g-faq-chevron">▾</span></div>
               <div class="g-faq-a">
-                可以。第一次体验完全可以只走路径 A（粘贴文字）和路径 B（网易会议秒录），B100 不是首次体验的必选项。
+                可以。第一次体验完全可以只走路径三（直接输入内容）和路径二（网易会议秒录），B100 不是首次体验的必选项。
               </div>
             </div>
 
@@ -5277,15 +5341,15 @@ code.g-inline{
             <div class="g-step">
               <div class="g-step-num">3</div>
               <div class="g-step-body">
-                <h4>先走路径 A：粘贴文字直接出纪要</h4>
-                <p>最快确认基础链路是否正常，1 分钟内见效果。</p>
+                <h4>先走路径三：直接输入内容</h4>
+                <p>粘贴文字或上传文件，最快确认基础链路是否正常，1 分钟内见效果。</p>
               </div>
             </div>
             <div class="g-step">
               <div class="g-step-num">4</div>
               <div class="g-step-body">
-                <h4>再走路径 B：测试网易会议秒录</h4>
-                <p>体验完整自动链路：会议 → 转写 → 纪要 → 主动推送。</p>
+                <h4>有 B100 走路径一，用网易会议走路径二</h4>
+                <p>路径一（B100）和路径二（秒录）均可体验完整自动链路，按你手上的设备/账号选择。</p>
               </div>
             </div>
             <div class="g-step">
